@@ -9,7 +9,7 @@ def parse_veracode_credentials(file_path: str) -> dict:
     config.read(file_path)
 
     if 'default' not in config:
-        raise ValueError(f"Section 'default' not found in the credentials file: {file_path}")
+        raise KeyError(f"Section 'default' not found in the credentials file: {file_path}")
 
     credentials = {
         'veracode_api_key_id': config['default'].get('veracode_api_key_id'),
@@ -17,7 +17,7 @@ def parse_veracode_credentials(file_path: str) -> dict:
     }
     
     if not credentials['veracode_api_key_id'] or not credentials['veracode_api_key_secret']:
-        raise ValueError("Credentials file is missing required API key ID or secret")
+        raise KeyError("Credentials file is missing required API key ID or secret")
 
     return credentials
 
@@ -77,6 +77,6 @@ if __name__ == "__main__":
     
     try:
         main(file_path, app_id)
-    except ValueError as e:
+    except Exception as e:
         print(f"Error: {e}")
         sys.exit(1)
